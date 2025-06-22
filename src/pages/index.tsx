@@ -1,8 +1,26 @@
 import { Input } from "../components/Input";
 import { MainCard } from "../components/MainCard";
 import "./MainPage.css";
+import { useState } from "react";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { SkeletonLoader } from "../components/SkeletonLoader";
+import { UsersRepository } from "../lib/repository/users";
 
 function MainPage() {
+  const [page, setPage] = useState(1);
+
+  const {
+    data: users,
+    isError,
+    isFetching,
+  } = useQuery({
+    queryKey: ["users", page],
+    queryFn: () => UsersRepository.getAll(page),
+    placeholderData: keepPreviousData,
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+
   return (
     <>
       <div
@@ -13,9 +31,11 @@ function MainPage() {
       </div>
       <div className="d-flex justify-content-center mt-3">
         <div className="cards-container">
-          {Array.from({ length: 15 }, (_, i) => i + 1).map(() => (
-            <MainCard />
-          ))}
+          {isFetching ? (
+            <SkeletonLoader />
+          ) : (
+            users!.items.map((user) => <MainCard key={user.id} user={user} />)
+          )}
         </div>
       </div>
     </>

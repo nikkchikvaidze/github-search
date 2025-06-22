@@ -1,30 +1,37 @@
-function MainCard() {
+import { useNavigate } from "react-router";
+import type { Tile } from "../types/tile";
+import type { User } from "../types/user";
+import { CardTile } from "./CardTile";
+
+type MainCardProps = {
+  user: User;
+};
+
+function MainCard({
+  user: { avatar, username, followers, repos },
+}: MainCardProps) {
+  const cardTileDetails: Tile[] = [
+    { icon: "assets/icon-user.svg", title: "Username", description: username },
+    {
+      icon: "assets/icon-group.svg",
+      title: "Followers",
+      description: followers,
+    },
+    { icon: "assets/icon-code.svg", title: "Repos", description: repos },
+  ];
+
+  const navigate = useNavigate();
   return (
     <>
-      <div className="main-card-container d-flex gap-3">
-        <img
-          className={"avatar"}
-          src="https://avatars.githubusercontent.com/u/499550?v=4"
-        />
+      <div
+        className="main-card-container d-flex gap-3"
+        onClick={() => navigate(`/user/${username}`)}
+      >
+        <img className={"avatar"} src={avatar} />
         <div className="card-info-wrapper">
-          <div className="d-flex gap-3">
-            <img src="assets/icon-user.svg" alt="icon-user" />
-            <p>
-              Username:<span>torvalds</span>
-            </p>
-          </div>
-          <div className="d-flex gap-3">
-            <img src="assets/icon-group.svg" alt="icon-group" />
-            <p>
-              Followers:<span>230,310</span>
-            </p>
-          </div>
-          <div className="d-flex gap-3">
-            <img src="assets/icon-code.svg" alt="icon-code" />
-            <p>
-              Repos:<span>200</span>
-            </p>
-          </div>
+          {cardTileDetails.map((tile) => (
+            <CardTile tile={tile} hasTitle={true} key={tile.description} />
+          ))}
         </div>
       </div>
     </>

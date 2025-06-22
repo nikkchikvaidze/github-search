@@ -132,7 +132,7 @@
   padding: 1rem;
   border-radius: 8px;
   background-color: #1e2a47;
-  width: 350px;
+  width: 360px;
   color: white;
   cursor: pointer;
   transition: transform 0.3s ease-in-out;
@@ -163,4 +163,78 @@
   display: grid;
   grid-template-columns: repeat(3, 400px);
   gap: 1rem;
+}
+
+.detail-card-container {
+  background-color: #1e2a47;
+  border-radius: 10px;
+  display: flex;
+  gap: 3rem;
+  padding: 2rem;
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4rem;
+}
+
+.tag {
+  color: #60abff;
+  font-size: 12px;
+}
+
+.bio {
+  margin-top: 1rem;
+  color: #646464;
+  width: 500px;
+}
+
+.more-details {
+  background-color: #141d2f;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  color: white;
+  padding: 1rem 0;
+  margin-top: 1rem;
+}
+
+.more-details p {
+  font-size: 12px;
+}
+
+.more-details h2 {
+  margin: 0;
+}
+
+.repos-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.additional-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  color: white;
+}
+
+.location-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.skeleton-loader-container {
+  border: 1px solid white;
+}
+
+.card-info-detail {
+  font-size: 12px;
 }
