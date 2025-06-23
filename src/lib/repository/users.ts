@@ -1,4 +1,4 @@
-import type { User } from "../../types/user";
+import type { ApiUser, User } from "../../types/user";
 import { GITHUBClient } from "../http/client";
 
 const UsersRepository = {
@@ -10,7 +10,6 @@ const UsersRepository = {
       `search/users?q=followers:%3E=1000&sort=followers&order=desc&per_page=15&page=${pageNumber}${
         searchTerm ? `&q=` + searchTerm : ""
       } `,
-      //   "search/users?q=followers:%3E=1000&sort=followers&order=desc&per_page=15&page=1&q=torvalds",
       {
         headers: {
           Authorization: `token ${import.meta.env.VITE_GITHUB_PAT_KEY}`,
@@ -27,16 +26,8 @@ const UsersRepository = {
       return {
         totalPages: data.total_count,
         items: data.items.map(
-          ({
-            login: username,
-            followers,
-            repos,
-            id,
-            avatar_url: avatar,
-          }: any) => ({
+          ({ login: username, id, avatar_url: avatar }: any) => ({
             username,
-            followers,
-            repos,
             id,
             avatar,
           })
@@ -45,18 +36,30 @@ const UsersRepository = {
     }
   },
 
-  async getUserByUsername(username: string): Promise<any> {
-    const { data } = await GITHUBClient.get(
-      `users/${username}`,
-      //   "search/users?q=followers:%3E=1000&sort=followers&order=desc&per_page=15&page=1&q=torvalds",
-      {
-        headers: {
-          Authorization: `token ${import.meta.env.VITE_GITHUB_PAT_KEY}`,
-        },
-      }
-    );
+  async getUserByUsername(username: string): Promise<ApiUser> {
+    const { data } = await GITHUBClient.get(`users/${username}`, {
+      headers: {
+        Authorization: `token ${import.meta.env.VITE_GITHUB_PAT_KEY}`,
+      },
+    });
 
-    return data;
+    return {
+      name: data.name,
+      username: data.login,
+      avatar: data.avatar_url,
+      bio: data.bio,
+      blog: data.blog,
+      company: data.company,
+      createDate: data.created_at,
+      email: data.email,
+      followers: data.followers.toLocaleString(),
+      following: data.following,
+      id: data.id,
+      location: data.location,
+      publicGists: data.public_gists,
+      repos: data.public_repos,
+      twitterUsername: data.twitter_username,
+    };
   },
 };
 

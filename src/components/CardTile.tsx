@@ -6,15 +6,40 @@ type CardTileProps = {
 };
 
 function CardTile({
-  tile: { description, icon, title },
+  tile: { description, icon, title, isDescriptionEmail, isDescriptionLink },
   hasTitle,
 }: CardTileProps) {
+  function setUrl(url: string): string {
+    return url.startsWith("http") ? url : `https://www.${url}`;
+  }
+
   return (
     <>
-      <div className="d-flex" style={{ gap: "0.5rem" }}>
+      <div className="d-flex" style={{ gap: "0.5rem", alignItems: "center" }}>
         <img src={icon} alt="icon-user" />
         {hasTitle && <p className="card-info-detail">{title}:</p>}
-        <span className="card-info-detail">{description}</span>
+        {!isDescriptionEmail && !isDescriptionLink && (
+          <span className="card-info-detail">{description}</span>
+        )}
+        {(isDescriptionEmail || isDescriptionLink) && (
+          <>
+            {description === "Not provided" ? (
+              <span className="card-info-detail">{description}</span>
+            ) : (
+              <a
+                style={{ cursor: "pointer" }}
+                href={
+                  isDescriptionEmail
+                    ? `mailto:${description}`
+                    : setUrl(description as string)
+                }
+                target={isDescriptionLink ? "_blank" : undefined}
+              >
+                {description}
+              </a>
+            )}
+          </>
+        )}
       </div>
     </>
   );

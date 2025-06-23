@@ -66,6 +66,10 @@
   justify-content: center;
 }
 
+.align-items-center {
+  align-items: center;
+}
+
 .active {
   border-bottom: 2px solid white;
 }
@@ -237,4 +241,13 @@
 
 .card-info-detail {
   font-size: 12px;
+}
+
+.pagination-button {
+  background-color: #141d2f;
+  outline: none;
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 5px 10px;
+  color: white;
 }

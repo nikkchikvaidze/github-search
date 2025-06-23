@@ -1,15 +1,19 @@
 import { useNavigate } from "react-router";
 import type { Tile } from "../types/tile";
-import type { User } from "../types/user";
+import type { ApiUser, User } from "../types/user";
 import { CardTile } from "./CardTile";
+import { idGenerator } from "../utils/id-generator";
 
 type MainCardProps = {
-  user: User;
+  user: ApiUser;
 };
 
 function MainCard({
   user: { avatar, username, followers, repos },
 }: MainCardProps) {
+  const generateId = idGenerator();
+  const navigate = useNavigate();
+
   const cardTileDetails: Tile[] = [
     { icon: "assets/icon-user.svg", title: "Username", description: username },
     {
@@ -18,9 +22,11 @@ function MainCard({
       description: followers,
     },
     { icon: "assets/icon-code.svg", title: "Repos", description: repos },
-  ];
+  ].map((tile) => ({
+    ...tile,
+    id: generateId.next().value,
+  }));
 
-  const navigate = useNavigate();
   return (
     <>
       <div
@@ -30,7 +36,7 @@ function MainCard({
         <img className={"avatar"} src={avatar} />
         <div className="card-info-wrapper">
           {cardTileDetails.map((tile) => (
-            <CardTile tile={tile} hasTitle={true} key={tile.description} />
+            <CardTile tile={tile} hasTitle={true} key={tile.id} />
           ))}
         </div>
       </div>

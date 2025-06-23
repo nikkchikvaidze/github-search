@@ -1,6 +1,9 @@
 import { useParams } from "react-router";
 import { UsersRepository } from "../lib/repository/users";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { CardTile } from "../components/CardTile";
+import type { Tile } from "../types/tile";
+import { idGenerator } from "../utils/id-generator";
 
 function DetailsPage() {
   const { id } = useParams();
@@ -10,6 +13,37 @@ function DetailsPage() {
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
   });
+  console.log(isFetching, "isfetching");
+
+  const generateId = idGenerator();
+
+  const cardDetails: Tile[] = [
+    {
+      icon: "/assets/icon-location.svg",
+      description: user?.location || "Not provided",
+    },
+    {
+      icon: "/assets/icon-twitter.svg",
+      description: user?.twitterUsername || "Not provided",
+    },
+    {
+      icon: "/assets/icon-link.svg",
+      description: user?.blog || "Not provided",
+      isDescriptionLink: true,
+    },
+    {
+      icon: "/assets/icon-organization.svg",
+      description: user?.company || "Not provided",
+    },
+    {
+      icon: "/assets/icon-mail.svg",
+      description: user?.email || "Not provided",
+      isDescriptionEmail: true,
+    },
+  ].map((tile) => ({
+    ...tile,
+    id: generateId.next().value,
+  }));
 
   if (!user) return <p>Loading...</p>;
 
@@ -20,22 +54,22 @@ function DetailsPage() {
         style={{ alignItems: "center", marginTop: "9rem" }}
       >
         <div className="detail-card-container">
-          <img className={"avatar"} src={user.avatar_url!} />
+          <img className={"avatar"} src={user.avatar} />
           <div className="detail-info-container">
             <div className="title-container">
               <h1 style={{ margin: "0", color: "white" }}>{user.name}</h1>
               <p style={{ color: "white" }}>Joined 25 Jan 2011</p>
             </div>
-            <p className="tag">@{user.login}</p>
+            <p className="tag">@{user.username}</p>
             {user.bio && <p className="bio">{user.bio}</p>}
             <div className="more-details">
               <div className="repos-container">
                 <p>Repos</p>
-                <h2>{user.public_repos}</h2>
+                <h2>{user.repos}</h2>
               </div>
               <div className="repos-container">
                 <p>Followers</p>
-                <h2>{user.followers.toLocaleString()}</h2>
+                <h2>{user.followers}</h2>
               </div>
               <div className="repos-container">
                 <p>Following</p>
@@ -43,52 +77,14 @@ function DetailsPage() {
               </div>
               <div className="repos-container">
                 <p>Gists:</p>
-                <h2>{user.public_gists}</h2>
+                <h2>{user.publicGists}</h2>
               </div>
             </div>
             <div className="additional-details">
-              <div className="location-container">
-                <img src="/assets/icon-location.svg" alt="icon" />
-                <p>{user.location || "Not provided"}</p>
-              </div>
-              <div className="location-container">
-                <img src="/assets/icon-twitter.svg" alt="icon" />
-                <p>{user.twitter_username || "Not provided"}</p>
-              </div>
-              <div className="location-container">
-                <img src="/assets/icon-link.svg" alt="icon" />
-                {user.blog ? (
-                  <a
-                    href={
-                      user.blog.startsWith("http")
-                        ? user.blog
-                        : "https://www." + user.blog
-                    }
-                    target="_blank"
-                  >
-                    {user.blog}
-                  </a>
-                ) : (
-                  "Not provided"
-                )}
-              </div>
-              <div className="location-container">
-                <img src="/assets/icon-organization.svg" alt="icon" />
-                <p>{user.company || "Not provided"}</p>
-              </div>
-              <div className="location-container">
-                <img src="/assets/icon-mail.svg" alt="icon" />
-                {user.email ? (
-                  <a
-                    style={{ cursor: "pointer" }}
-                    href={`mailto:${user.email}`}
-                  >
-                    {user.email}
-                  </a>
-                ) : (
-                  "Not provided"
-                )}
-              </div>
+              {user &&
+                cardDetails.map((tile) => (
+                  <CardTile hasTitle={false} tile={tile} key={tile.id} />
+                ))}
             </div>
           </div>
         </div>
