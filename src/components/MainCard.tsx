@@ -19,7 +19,7 @@ function MainCard({
     {
       icon: "assets/icon-group.svg",
       title: "Followers",
-      description: followers,
+      description: followers.toLocaleString(),
     },
     { icon: "assets/icon-code.svg", title: "Repos", description: repos },
   ].map((tile) => ({

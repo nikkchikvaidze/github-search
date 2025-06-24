@@ -8,6 +8,7 @@ import { UsersRepository } from "../lib/repository/users";
 import type { ApiUser } from "../types/user";
 import { Pagination } from "../components/Pagination";
 import { useDebounce } from "../hooks/use-debounce";
+import { Empty } from "../components/Empty";
 
 function MainPage() {
   const [page, setPage] = useState<number>(1);
@@ -38,6 +39,9 @@ function MainPage() {
     .map((user) => user.data)
     .filter((user) => user !== undefined);
 
+  const isEmpty = users.length === 0;
+  console.log(isEmpty, "isEmpty");
+
   function onPreviousPage(): void {
     setPage((prev) => Math.max(prev - 1, 1));
   }
@@ -47,6 +51,7 @@ function MainPage() {
 
   function onInputChange(value: string): void {
     setSearchTerm(value);
+    setPage(1);
   }
 
   return (
@@ -61,22 +66,27 @@ function MainPage() {
           inputChange={onInputChange}
         />
       </div>
-      <div className="d-flex justify-content-center mt-3">
-        <div className="cards-container">
-          {isFetching || isFetchingData ? (
-            <SkeletonLoader />
-          ) : (
-            users.map((user) => <MainCard key={user.id} user={user} />)
+      {!isFetching && !isFetchingData && isEmpty ? (
+        <Empty />
+      ) : (
+        <div className="d-flex justify-content-center mt-3 flex-column align-items-center">
+          <div className="cards-container">
+            {isFetching || isFetchingData ? (
+              <SkeletonLoader />
+            ) : (
+              users.map((user) => <MainCard key={user.id} user={user} />)
+            )}
+          </div>
+
+          {data?.totalPages && data?.totalPages! > 1 && (
+            <Pagination
+              page={page}
+              totalPages={data.totalPages}
+              previousPage={onPreviousPage}
+              nextPage={onNextPage}
+            />
           )}
         </div>
-      </div>
-      {data?.totalPages && data?.totalPages! > 1 && (
-        <Pagination
-          page={page}
-          totalPages={data.totalPages}
-          previousPage={onPreviousPage}
-          nextPage={onNextPage}
-        />
       )}
     </>
   );

@@ -52,13 +52,14 @@ const UsersRepository = {
       company: data.company,
       createDate: data.created_at,
       email: data.email,
-      followers: data.followers.toLocaleString(),
+      followers: data.followers,
       following: data.following,
       id: data.id,
       location: data.location,
       publicGists: data.public_gists,
       repos: data.public_repos,
       twitterUsername: data.twitter_username,
+      link: data.html_url,
     };
   },
 };

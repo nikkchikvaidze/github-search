@@ -7,7 +7,6 @@ type InputProps = {
 };
 
 function Input({ value, inputChange, isSearching }: InputProps) {
-  console.log(isSearching, "inputidan");
   return (
     <>
       <div className="input-wrapper">
