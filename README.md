@@ -1,54 +1,50 @@
-# React + TypeScript + Vite
+# 🔍 GitHub User Search Challenge
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A web app built using the GitHub API that allows users to search for GitHub profiles, view user details, paginate results, and manage a list of favorite users — all stored locally in the browser.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- **Search GitHub Users**  
+  Instantly find users using the GitHub Users API.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Pagination**  
+  Browse search results page by page for better performance and UX.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- **User Details View**  
+  Click on a user to see detailed information like:
+  - Username
+  - Avatar
+  - Bio
+  - Public Repos
+  - Followers / Following
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- **Add to Favorites**  
+  - Save users you want to keep track of.
+  - Favorites are stored in `localStorage`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **Remove from Favorites**  
+  - Remove users from your list anytime.
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+- **Favorites List**  
+  - View your saved users from the Favorites section.
+
+---
+
+## 🛠️ Tech Stack
+
+- **React** 
+- **Tailwind CSS**
+- **GitHub REST API**
+- **LocalStorage API**
+
+---
+
+## 📦 Installation
+
+```bash
+git clone https://github.com/your-username/github-user-search-challenge.git
+cd github-user-search-challenge
+npm install
+npm run dev
