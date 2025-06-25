@@ -1,7 +1,6 @@
 import { Input } from "../components/Input";
 import { MainCard } from "../components/MainCard";
-import "./MainPage.css";
-import { use, useState } from "react";
+import { useState } from "react";
 import { keepPreviousData, useQueries, useQuery } from "@tanstack/react-query";
 import { SkeletonLoader } from "../components/SkeletonLoader";
 import { UsersRepository } from "../lib/repository/users";
@@ -15,7 +14,7 @@ function MainPage() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  const { data, isError, isFetching } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: ["users", page, debouncedSearchTerm],
     queryFn: () => UsersRepository.getAll(page, searchTerm),
     placeholderData: keepPreviousData,
@@ -40,7 +39,6 @@ function MainPage() {
     .filter((user) => user !== undefined);
 
   const isEmpty = users.length === 0;
-  console.log(isEmpty, "isEmpty");
 
   function onPreviousPage(): void {
     setPage((prev) => Math.max(prev - 1, 1));
@@ -56,10 +54,7 @@ function MainPage() {
 
   return (
     <>
-      <div
-        style={{ display: "flex", justifyContent: "center" }}
-        className="mt-3 mb-3"
-      >
+      <div className="mt-4 mb-4 flex justify-center">
         <Input
           value={searchTerm}
           isSearching={isFetching || isFetchingData}
@@ -69,8 +64,8 @@ function MainPage() {
       {!isFetching && !isFetchingData && isEmpty ? (
         <Empty />
       ) : (
-        <div className="d-flex justify-content-center mt-3 flex-column align-items-center">
-          <div className="cards-container">
+        <div className="flex justify-center mt-4 flex-col items-center">
+          <div className="grid gap-4 [grid-template-columns:repeat(3,400px)]">
             {isFetching || isFetchingData ? (
               <SkeletonLoader />
             ) : (

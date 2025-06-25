@@ -5,21 +5,15 @@ function FavoritesPage() {
 
   if (!favorites.length) {
     return (
-      <div style={{ textAlign: "center", paddingTop: "14rem", color: "white" }}>
+      <div className="text-center pt-[14rem] text-white">
         <h1>Favorites List is empty</h1>
       </div>
     );
   }
   return (
-    <div style={{ marginLeft: "2rem", marginRight: "2rem" }}>
-      <h3 style={{ color: "white" }}>Favorites List</h3>
-      <table
-        style={{
-          width: "100%",
-          color: "white",
-          borderCollapse: "collapse",
-        }}
-      >
+    <div className="ml-8 mr-8 text-white">
+      <h3 className="mb-8">Favorites List</h3>
+      <table className="w-full border-collapse">
         <thead>
           <tr>
             <th>User</th>
@@ -38,33 +32,40 @@ function FavoritesPage() {
                 }}
               >
                 <td>
-                  <div style={{ padding: "10px 0" }}>
-                    <img className="avatar sm-avatar" src={favorite.avatar} />
+                  <div className="py-[10px] px-0 flex">
+                    <img
+                      className="w-[50px] h-auto mr-8 rounded-full shadow-[0_0_10px_#646464]"
+                      src={favorite.avatar}
+                    />
+                    <div className="flex flex-col items-start">
+                      <p>{favorite.name}</p>
+                      <p className="text-[10px]">@{favorite.username}</p>
+                    </div>
                   </div>
                 </td>
                 <td>
-                  <div style={{ padding: "10px 0" }}>
+                  <div className="py-[10px] px-0 ">
                     {favorite.followers.toLocaleString()}
                   </div>
                 </td>
                 <td>
-                  <div style={{ padding: "10px 0" }}>
-                    {favorite.repositories.toLocaleString()}
+                  <div className="py-[10px] px-0 ">
+                    {favorite.repos.toLocaleString()!}
                   </div>
                 </td>
                 <td>
-                  <div style={{ padding: "10px 0" }}>
+                  <div className="py-[10px] px-0 flex justify-center">
                     <img
-                      style={{ cursor: "pointer" }}
                       src="assets/icon-delete.svg"
-                      alt="icon-user"
+                      alt="icon-remove"
+                      className="cursor-pointer"
                       onClick={() => remove(favorite)}
                     />
                     <a href={favorite.link} target="_blank">
                       <img
-                        style={{ cursor: "pointer", marginLeft: "10px" }}
+                        className="cursor-pointer ml-[10px]"
                         src="assets/icon-redirect.svg"
-                        alt="icon-user"
+                        alt="icon-link"
                       />
                     </a>
                   </div>

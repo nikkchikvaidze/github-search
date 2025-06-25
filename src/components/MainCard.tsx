@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import type { Tile } from "../types/tile";
-import type { ApiUser, User } from "../types/user";
+import type { ApiUser } from "../types/user";
 import { CardTile } from "./CardTile";
 import { idGenerator } from "../utils/id-generator";
 
@@ -30,13 +30,31 @@ function MainCard({
   return (
     <>
       <div
-        className="main-card-container d-flex gap-3"
+        className="    border border-white
+    p-4
+    rounded-[8px]
+    bg-[#1e2a47]
+    w-[360px]
+    text-white
+    cursor-pointer
+    transition-transform
+    duration-300
+    ease-in-out
+    hover:scale-110 flex gap-4"
         onClick={() => navigate(`/user/${username}`)}
       >
-        <img className={"avatar"} src={avatar} />
-        <div className="card-info-wrapper">
+        <img
+          className="w-32 h-32 rounded-full shadow-[0_0_10px_#646464]"
+          src={avatar}
+        />
+        <div className="flex flex-col items-start justify-evenly">
           {cardTileDetails.map((tile) => (
-            <CardTile tile={tile} hasTitle={true} key={tile.id} />
+            <CardTile
+              tile={tile}
+              hasTitle={true}
+              key={tile.id}
+              isForMainCard={true}
+            />
           ))}
         </div>
       </div>

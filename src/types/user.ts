@@ -19,10 +19,3 @@ export interface ApiUser extends User {
   twitterUsername: string;
   link: string;
 }
-
-export interface FavoriteUser extends User {
-  followers: number;
-  repositories: number;
-  link: string;
-  name: string;
-}

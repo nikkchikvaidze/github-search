@@ -4,7 +4,7 @@ import { HeaderLinks } from "../config/layout";
 function Navigation() {
   return (
     <div>
-      <nav className="navigation-bar py-3 pr-3 d-flex justify-content-end gap-3">
+      <nav className="bg-[#141d2f] py-4 pr-4 flex justify-end gap-4">
         {HeaderLinks.map((link) => (
           <NavLink
             key={link.path}

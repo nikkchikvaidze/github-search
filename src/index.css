@@ -6,13 +6,20 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body,
+button,
+input::placeholder,
+input {
   font-family: "Space Mono", monospace;
 }
 
-p {
-  margin: 0;
+input::placeholder,
+input {
+  color: #f6f8ff;
 }
 
-button {
-  font-family: "Space Mono", monospace;
+input::placeholder {
+  opacity: 0.5;
 }
