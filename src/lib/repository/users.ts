@@ -4,17 +4,12 @@ import { GITHUBClient } from "../http/client";
 const UsersRepository = {
   async getAll(
     pageNumber: number,
-    searchTerm?: string
+    searchTerm?: string,
   ): Promise<{ items: User[]; totalPages: number }> {
     const { data } = await GITHUBClient.get(
       `search/users?q=followers:%3E=1000&sort=followers&order=desc&per_page=15&page=${pageNumber}${
         searchTerm ? `&q=` + searchTerm : ""
       } `,
-      {
-        headers: {
-          Authorization: `token ${import.meta.env.VITE_GITHUB_PAT_KEY}`,
-        },
-      }
     );
 
     if (!data.items.length) {
@@ -26,22 +21,22 @@ const UsersRepository = {
       return {
         totalPages: data.total_count,
         items: data.items.map(
+          // ts გარემოში ვართ, any ს ვიყენებთ მხოლოდ იმ შმთხვევაში როცა რაიმე მოდული არ ასაპორტებს ტიპებს
+          // !არ გამოვიყენოთ any
+          //  მარტივად შეგიძლია ტიპი აღწერო, მაგალითად
+          //  type SomeType = { login: string; id: number; avatar_url: string };
           ({ login: username, id, avatar_url: avatar }: any) => ({
             username,
             id,
             avatar,
-          })
+          }),
         ),
       };
     }
   },
 
   async getUserByUsername(username: string): Promise<ApiUser> {
-    const { data } = await GITHUBClient.get(`users/${username}`, {
-      headers: {
-        Authorization: `token ${import.meta.env.VITE_GITHUB_PAT_KEY}`,
-      },
-    });
+    const { data } = await GITHUBClient.get(`users/${username}`);
 
     return {
       name: data.name,
