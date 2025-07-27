@@ -1,6 +1,6 @@
 function Empty() {
   return (
-    <div className="flex justify-center mt-8">
+    <div className="mt-8 flex justify-center">
       <h1 className="text-white">
         There is no user with searched name, Please Try different one
       </h1>

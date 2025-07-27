@@ -12,9 +12,7 @@ type FavoritesContextProviderProps = {
   children: ReactNode;
 };
 
-const FavoritesContext = createContext<FavoritesContextType | undefined>(
-  undefined
-);
+const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
 
 function FavoritesContextProvider({ children }: FavoritesContextProviderProps) {
   const [favorites, setFavorites] = useState<ApiUser[]>(() => {
@@ -24,7 +22,16 @@ function FavoritesContextProvider({ children }: FavoritesContextProviderProps) {
     return [];
   });
 
+  //  setFavorites ქოლბექში  მხოლოდ საწყისი მნიშვნელობა განახლდეს,
+  //  საიდეფექტებს თავიდან ავიცილებთ
+  //  იუზეფექით შეგიიძლია განაახლო ლოკალსტორეიჯი როცა ფავორიტები იცვლება
+  // useEffect(() => {
+  //   localStorage.setItem("favorites", JSON.stringify(favorites));
+  // }, [favorites]);
+
   function add(user: ApiUser) {
+    // setFavorites ქოლბექში მხოლოდ ფავორიტები განაახლდეს,
+    // საიდეფექტებს თავიდან ავიცილებთ
     setFavorites((prev) => {
       const newFavorites = [...prev, user];
       localStorage.setItem("favorites", JSON.stringify(newFavorites));
@@ -32,11 +39,15 @@ function FavoritesContextProvider({ children }: FavoritesContextProviderProps) {
     });
   }
 
+  // მთლიან user ს რატო აწვდი როცა მხოლოდ id გჭირდება? user.id ხომ საკმარისია?
   function isFavorite(user: ApiUser) {
     return favorites.some((users) => users.id === user.id);
   }
 
+  // აქაც მთლიან user ს რატო აწვდი როცა მხოლოდ id გჭირდება?
   function remove(user: ApiUser) {
+    // setFavorites ქოლბექში მხოლოდ ფავორიტები განაახლდეს,
+    // საიდეფექტებს თავიდან ავიცილებთ
     setFavorites((prev) => {
       const newFavorites = prev.filter(({ id }) => user.id !== id);
       localStorage.setItem("favorites", JSON.stringify(newFavorites));
@@ -58,11 +69,12 @@ function FavoritesContextProvider({ children }: FavoritesContextProviderProps) {
   );
 }
 
+// /hooks/favorites.ts ლოგიკური ადგილი იქნება
 function useFavorites() {
   const value = useContext(FavoritesContext);
 
   if (!value) {
-    throw new Error("Your component isnt part of Favorites Context Provider");
+    throw new Error("Your component isn't part of Favorites Context Provider");
   }
 
   return value;

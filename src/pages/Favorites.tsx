@@ -5,13 +5,13 @@ function FavoritesPage() {
 
   if (!favorites.length) {
     return (
-      <div className="text-center pt-[14rem] text-white">
+      <div className="pt-[14rem] text-center text-white">
         <h1>Favorites List is empty</h1>
       </div>
     );
   }
   return (
-    <div className="ml-8 mr-8 text-white">
+    <div className="mr-8 ml-8 text-white">
       <h3 className="mb-8">Favorites List</h3>
       <table className="w-full border-collapse">
         <thead>
@@ -26,15 +26,19 @@ function FavoritesPage() {
           {favorites.map((favorite) => {
             return (
               <tr
+                key={favorite.id}
+                // ტაილვინდის უტილიტი კლასებით შეგიძლია მსგავსი სტილის გაკეთება
+                // თუ რაიმე კონკრეტული ქეისი არ გვაქ,  ჯობია ავირიდოთ
+                // style გამოყენება
                 style={{
                   textAlign: "center",
                   borderBottom: "1px solid #c5c5c59c",
                 }}
               >
                 <td>
-                  <div className="py-[10px] px-0 flex">
+                  <div className="flex px-0 py-[10px]">
                     <img
-                      className="w-[50px] h-auto mr-8 rounded-full shadow-[0_0_10px_#646464]"
+                      className="mr-8 h-auto w-[50px] rounded-full shadow-[0_0_10px_#646464]"
                       src={favorite.avatar}
                     />
                     <div className="flex flex-col items-start">
@@ -44,17 +48,18 @@ function FavoritesPage() {
                   </div>
                 </td>
                 <td>
-                  <div className="py-[10px] px-0 ">
+                  <div className="px-0 py-[10px]">
                     {favorite.followers.toLocaleString()}
                   </div>
                 </td>
                 <td>
-                  <div className="py-[10px] px-0 ">
-                    {favorite.repos.toLocaleString()!}
+                  <div className="px-0 py-[10px]">
+                    {favorite.repos?.toLocaleString()}
                   </div>
                 </td>
                 <td>
-                  <div className="py-[10px] px-0 flex justify-center">
+                  {/*                                      py-2.5 იგივეა   */}
+                  <div className="flex justify-center px-0 py-[10px]">
                     <img
                       src="assets/icon-delete.svg"
                       alt="icon-remove"
@@ -63,7 +68,8 @@ function FavoritesPage() {
                     />
                     <a href={favorite.link} target="_blank">
                       <img
-                        className="cursor-pointer ml-[10px]"
+                        //           ml-2.5
+                        className="ml-[10px] cursor-pointer"
                         src="assets/icon-redirect.svg"
                         alt="icon-link"
                       />

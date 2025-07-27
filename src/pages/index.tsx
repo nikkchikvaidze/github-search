@@ -22,7 +22,7 @@ function MainPage() {
     refetchOnWindowFocus: false,
   });
 
-  const userDetailQueries = useQueries({
+  const users = useQueries({
     queries:
       data?.items?.map((user) => ({
         queryKey: ["githubUser", user.username],
@@ -31,14 +31,22 @@ function MainPage() {
         staleTime: 1000 * 60 * 5,
         refetchOnWindowFocus: false,
       })) ?? [],
+    // useQueries ის combine ფუნქცია გვაძლევს საშუალებას შევაერთოთ ყველა რეზულტატი ერთ ობიექტში
+    // და დავაბრუნოთ ის, როგორც ერთი ობიექტი
+    // პერფორმანსისთვის შეგიძლია useCallback ში გაახვიო
+    combine: (results) => {
+      const data = results
+        .map((result) => result.data)
+        .filter((user): user is ApiUser => !!user);
+      const isLoading = results.some((result) => result.isLoading);
+      const isError = results.some((result) => result.isError);
+      return {
+        data,
+        isLoading: isLoading,
+        isEmpty: isError || data.length === 0,
+      };
+    },
   });
-
-  const isFetchingData = userDetailQueries.some((d) => d.isFetching);
-  const users: ApiUser[] = userDetailQueries
-    .map((user) => user.data)
-    .filter((user) => user !== undefined);
-
-  const isEmpty = users.length === 0;
 
   function onPreviousPage(): void {
     setPage((prev) => Math.max(prev - 1, 1));
@@ -57,23 +65,27 @@ function MainPage() {
       <div className="mt-4 mb-4 flex justify-center">
         <Input
           value={searchTerm}
-          isSearching={isFetching || isFetchingData}
+          isSearching={isFetching || users.isLoading}
           inputChange={onInputChange}
         />
       </div>
-      {!isFetching && !isFetchingData && isEmpty ? (
+      {!isFetching && !users.isLoading && users.isEmpty ? (
         <Empty />
       ) : (
-        <div className="flex justify-center mt-4 flex-col items-center">
-          <div className="grid gap-4 [grid-template-columns:repeat(3,400px)]">
-            {isFetching || isFetchingData ? (
+        <div className="mt-4 flex flex-col items-center justify-center">
+          {/* ფრონტ დევები ვართ,  რესპონსივის არ გაკეთება არც განიხილება :))
+             ტაილვინდი მარტივად გაძლევს რესპონსივ ლეიაუთის შექმნის საშუალებას,
+             https://tailwindcss.com/docs/responsive-design
+          */}
+          <div className="grid [grid-template-columns:repeat(3,400px)] gap-4">
+            {isFetching || users.isLoading ? (
               <SkeletonLoader />
             ) : (
-              users.map((user) => <MainCard key={user.id} user={user} />)
+              users.data.map((user) => <MainCard key={user.id} user={user} />)
             )}
           </div>
 
-          {data?.totalPages && data?.totalPages! > 1 && (
+          {data?.totalPages && data?.totalPages > 1 && (
             <Pagination
               page={page}
               totalPages={data.totalPages}

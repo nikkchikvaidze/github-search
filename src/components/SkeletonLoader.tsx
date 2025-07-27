@@ -11,7 +11,7 @@ function SkeletonLoader({ amount = 15 }: SkeletonLoaderProps) {
       {Array.from({ length: amount }, (_, i) => (
         <div
           key={i}
-          className="flex gap-4 border-[3px] border-[#444] w-[350px] rounded-[8px] p-4 pb-0 h-[170px]"
+          className="flex h-[170px] w-[350px] gap-4 rounded-[8px] border-[3px] border-[#444] p-4 pb-0"
         >
           <SkeletonTheme baseColor="#202020" highlightColor="#444">
             <Skeleton circle width={128} height={128} />

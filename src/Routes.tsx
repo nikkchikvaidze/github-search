@@ -12,11 +12,7 @@ function Routes() {
           }
 
           return (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={<route.page />}
-            />
+            <Route key={route.path} path={route.path} element={<route.page />} />
           );
         })}
       </Route>
